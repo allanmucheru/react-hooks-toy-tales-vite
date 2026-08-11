@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-const API = "http://localhost:3001/toys";
-
 function ToyForm({ onAddToy }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -16,29 +14,26 @@ function ToyForm({ onAddToy }) {
     }));
   }
 
-  // 2. POST: Create a new toy
   function handleSubmit(e) {
     e.preventDefault();
-
     const newToyObj = {
       name: formData.name,
       image: formData.image,
       likes: 0,
     };
 
-    fetch(API, {
+    fetch("http://localhost:3001/toys", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newToyObj),
     })
-      .then((res) => res.json())
+      .then((r) => r.json())
       .then((createdToy) => {
-        onAddToy(createdToy);
+        if (onAddToy) onAddToy(createdToy);
         setFormData({ name: "", image: "" });
-      })
-      .catch((err) => console.error("Error creating toy:", err));
+      });
   }
 
   return (

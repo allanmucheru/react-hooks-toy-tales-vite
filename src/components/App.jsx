@@ -3,25 +3,21 @@ import Header from "./Header";
 import ToyForm from "./ToyForm";
 import ToyContainer from "./ToyContainer";
 
-const API = "http://localhost:3001/toys";
-
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [toys, setToys] = useState([]);
 
-  // 1. GET: Fetch toys on mount
   useEffect(() => {
-    fetch(API)
-      .then((res) => res.json())
+    fetch("http://localhost:3001/toys")
+      .then((r) => r.json())
       .then((data) => setToys(data))
-      .catch((err) => console.error("Error fetching toys:", err));
+      .catch((err) => console.error(err));
   }, []);
 
   function handleClick() {
     setShowForm((showForm) => !showForm);
   }
 
-  // State update handlers
   function handleAddToy(newToy) {
     setToys((prevToys) => [...prevToys, newToy]);
   }

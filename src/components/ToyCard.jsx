@@ -1,13 +1,10 @@
 import React from "react";
 
-const API = "http://localhost:3001/toys";
-
 function ToyCard({ toy, onUpdateToy, onDeleteToy }) {
   const { id, name, image, likes } = toy;
 
-  // 3. PATCH: Increment likes
   function handleLikeClick() {
-    fetch(`${API}/${id}`, {
+    fetch(`http://localhost:3001/toys/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -16,22 +13,20 @@ function ToyCard({ toy, onUpdateToy, onDeleteToy }) {
         likes: likes + 1,
       }),
     })
-      .then((res) => res.json())
-      .then((updatedToy) => onUpdateToy(updatedToy))
-      .catch((err) => console.error("Error updating likes:", err));
+      .then((r) => r.json())
+      .then((updatedToy) => {
+        if (onUpdateToy) onUpdateToy(updatedToy);
+      });
   }
 
-  // 4. DELETE: Remove toy ("Donate")
   function handleDeleteClick() {
-    fetch(`${API}/${id}`, {
+    fetch(`http://localhost:3001/toys/${id}`, {
       method: "DELETE",
-    })
-      .then((res) => {
-        if (res.ok) {
-          onDeleteToy(id);
-        }
-      })
-      .catch((err) => console.error("Error deleting toy:", err));
+    }).then((r) => {
+      if (r.ok && onDeleteToy) {
+        onDeleteToy(id);
+      }
+    });
   }
 
   return (

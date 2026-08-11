@@ -1,7 +1,7 @@
 import React from "react";
 import ToyCard from "./ToyCard";
 
-function ToyContainer({ toys, onUpdateToy, onDeleteToy }) {
+function ToyContainer({ toys = [], onUpdateToy, onDeleteToy }) {
   return (
     <div id="toy-collection">
       {toys.map((toy) => (
